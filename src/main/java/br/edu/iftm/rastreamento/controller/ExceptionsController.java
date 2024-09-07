@@ -16,7 +16,7 @@ public class ExceptionsController {
 	@Operation(summary = "Trata exceção de não encontrado")
 	@ExceptionHandler(NaoAcheiException.class)
 	public ResponseEntity<?> naoAchei(NaoAcheiException e) {
-		System.out.println("------------------------");
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body("Erro: " + e.getMessage());
 	}
 }

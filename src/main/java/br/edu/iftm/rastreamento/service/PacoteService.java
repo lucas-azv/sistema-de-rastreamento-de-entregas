@@ -12,6 +12,7 @@ import br.edu.iftm.rastreamento.model.Endereco;
 import br.edu.iftm.rastreamento.model.Pacote;
 import br.edu.iftm.rastreamento.repository.EnderecoRepository;
 import br.edu.iftm.rastreamento.repository.PacoteRepository;
+import br.edu.iftm.rastreamento.service.exceptions.NaoAcheiException;
 import br.edu.iftm.rastreamento.service.util.Converters;
 
 @Service
@@ -33,7 +34,8 @@ public class PacoteService {
     }
 
     public PacoteDTO getPacoteById(Long id) {
-        Pacote pacote = pacoteRepository.findById(id).get();
+        Pacote pacote = pacoteRepository.findById(id)
+            .orElseThrow(() -> new NaoAcheiException("Pacote com ID " + id + " não encontrado."));
         return converters.convertToDTO(pacote);
     }
 
@@ -46,10 +48,9 @@ public class PacoteService {
     }
 
     public PacoteDTO updatePacote(Long id, PacoteDTO pacoteDTO) {
-        Pacote pacote = converters.convertToEntity(pacoteDTO);
-        pacote.setId(id);
-        Pacote updatedPacote = pacoteRepository.save(pacote);
-        return converters.convertToDTO(updatedPacote);
+        Pacote pacoteExistente = pacoteRepository.findById(id)
+            .orElseThrow(() -> new NaoAcheiException("Pacote com ID " + id + " não encontrado."));
+        return converters.convertToDTO(pacoteExistente);
     }
 
 }
