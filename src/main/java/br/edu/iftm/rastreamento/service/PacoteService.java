@@ -53,4 +53,14 @@ public class PacoteService {
         return converters.convertToDTO(pacoteExistente);
     }
 
+    public List<PacoteDTO> getPacotesByStatus(String status) {
+        List<Pacote> pacotes = pacoteRepository.findByStatus(status);
+        return pacotes.stream().map((pacote) -> converters.convertToDTO(pacote)).collect(Collectors.toList());
+    }
+
+    public List<PacoteDTO> getPacotesByDestinatario(String destinatario) {
+        List<Pacote> pacotes = pacoteRepository.findByDestinatario(destinatario);
+        return pacotes.stream().map((pacote) -> converters.convertToDTO(pacote)).collect(Collectors.toList());
+    }
+
 }
